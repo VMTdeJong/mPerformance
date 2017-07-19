@@ -21,10 +21,10 @@
 #'
 #' @examples
 #' brier(matrix(1/3, nrow = 3, ncol = 3), indices = c(1,2,3))
-#' brier(matrix(c(1/2, 1/4, 1/4,
+#' brier(t(matrix(c(1/2, 1/4, 1/4,
 #'                1/8, 5/8, 2/8,
 #'                1/8, 1/8, 3/4),
-#'                nrow = 3, ncol = 3),
+#'                nrow = 3, ncol = 3)),
 #' indicator.matrix = matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE))
 #' @export
 
