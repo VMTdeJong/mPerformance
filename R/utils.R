@@ -1,7 +1,3 @@
-# To do:
-# - debug im2i for NA.
-
-
 # Converts a labels vector to an indices vector,
 # using the probability matrix or the names thereof.
 l2i <- function(p, labels, names = colnames(p))
