@@ -23,6 +23,8 @@ Compute the multinomial log-likelihood
 }
 \details{
 Compute the multinomial log-likelihood, for predicted or fitted values.
+
+Not debugged for the handling of missing values.
 }
 \examples{
 # Using the observed prevalence for the fitted probabilities,

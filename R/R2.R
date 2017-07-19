@@ -31,12 +31,8 @@ mll <- function(p, indices, na.rm = T)
   L <- c("Multinomial log-likelihood" = 0)
   for (i in cats)
     {
-    # print(paste("i: ", i))
-    aa <- log(p[indices == i, i])
-    # print(aa)
-    L <- L + sum(aa, na.rm = na.rm)
+    L <- L + sum(log(p[indices == i, i]), na.rm = na.rm)
      }
-
   L
 }
 
@@ -47,6 +43,8 @@ mll <- function(p, indices, na.rm = T)
 #'
 #' @param p An n x K matrix of probabilities, where n is the number of observations,
 #' and K the number of mutually exclusive outcome categories.
+#' @param labels Vector of length n, containing the labels (character or factor) of
+#' the observed outcome categories. Ignored if \code{indices} or \code{indicator.matrix} is specified.
 #' @param indices A vector of length n, containing the indices k, k = 1,...,K, of the observed outcome categories.
 #' @param na.rm logical. Should missing values (including NaN) be removed?
 #'
@@ -58,7 +56,7 @@ mll <- function(p, indices, na.rm = T)
 #' mr2(matrix(1/3, nrow = 3, ncol = 3), c(1,2,3))
 #'
 #' @export
-mr2 <- function(p, indices, na.rm = T)
+mr2 <- function(p, labels, indices = l2i(p, labels), na.rm = T)
 {
   n_obs <- length(indices)
   n_na_obs <- sum(!is.na(indices))
