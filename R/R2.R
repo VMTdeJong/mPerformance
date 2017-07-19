@@ -18,10 +18,10 @@
 #'
 #' @return  \code{mll} provides the multinomial log-likelihood.
 #'
-#' @examples
-#' # Using the observed prevalence for the fitted probabilities,
-#' # we obtain the log-likelihood of the null-model:
-#' mll(matrix(1/3, nrow = 3, ncol = 3), c(1,2,3))
+#' @examples When observing 3 outcomes with indices 1, 2 and 3,
+#' we can obtain the log-likelihood of the null-model:
+#' by letting all observed probabilities equal 1/3:
+#' mll(matrix(1/3, nrow = 3, ncol = 3), indices = c(1,2,3))
 #'
 #' @export
 mll <- function(p, labels, indices = l2i(p, labels), na.rm = T)
@@ -41,6 +41,8 @@ mll <- function(p, labels, indices = l2i(p, labels), na.rm = T)
 #'
 #' @aliases MultinomialRSquare
 #'
+#' Compute various R-square measures: Cox, Nagelkerke and McFadden R-square.
+#'
 #' @param p An n x K matrix of probabilities, where n is the number of observations,
 #' and K the number of mutually exclusive outcome categories.
 #' @param labels Vector of length n, containing the labels (character or factor) of
@@ -50,10 +52,10 @@ mll <- function(p, labels, indices = l2i(p, labels), na.rm = T)
 #'
 #' @return  \code{mr2} provides a data.frame of R-square values by the methods of Cox, Nagelkerke and Mcfadden.
 #'
-#' @examples
-#' # Using for the fitted probabilities the observed frequencies,
-#' # we obtain the R^2 values of the null-model:
-#' mr2(matrix(1/3, nrow = 3, ncol = 3), c(1,2,3))
+#' @examples When we observe 3 outcomes with indices 1, 2 and 3,
+#' we can obtain the R^2 values of the null-model
+#' by letting all observed probabilities equal 1/3:
+#' mr2(matrix(1/3, nrow = 3, ncol = 3), indices = c(1,2,3))
 #'
 #' @export
 mr2 <- function(p, labels, indices = l2i(p, labels), na.rm = T)

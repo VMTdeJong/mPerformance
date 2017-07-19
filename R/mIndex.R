@@ -13,7 +13,8 @@
 #' the observed outcome categories. Ignored if \code{indices} is specified.
 #' @param indices Optional. A vector of length n, containing the indices k, k = 1,...,K,
 #' of the observed outcome categories. Overrides \code{labels}.
-#' @param na.rm logical. Should missing values (including NaN) be removed?
+#' @param pairwiseC Optional. Optained with mPairwiseC Overrides all other parameters.
+#' @param names Optional. col and rownames of the outcome matrix.
 #'
 #' @return  \code{mIndex} provides the M-index (= Multiclass AUC), a vector of length 1.
 #' @return  \code{mPairwiseC} provides a matrix with pairwise c-statistics. Contains both
@@ -50,7 +51,7 @@ mPairwiseC <- function(p, labels, indices = l2i(p, labels), names = colnames(p))
                   where each column contains the predicted probabilities for that category.")
 
   A_mat <- matrix(NA, nrow = K, ncol = K)
-  dimnames(A_mat) <- list("Outcome" = names, "Comparator" = names)
+  dimnames(A_mat) <- list("Outcome 1" = names, "Outcome 2" = names)
   for (i in 1:K)
   {
     cat0 <- indices == i

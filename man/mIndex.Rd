@@ -19,7 +19,9 @@ the observed outcome categories. Ignored if \code{indices} is specified.}
 \item{indices}{Optional. A vector of length n, containing the indices k, k = 1,...,K,
 of the observed outcome categories. Overrides \code{labels}.}
 
-\item{na.rm}{logical. Should missing values (including NaN) be removed?}
+\item{pairwiseC}{Optional. Optained with mPairwiseC Overrides all other parameters.}
+
+\item{names}{Optional. col and rownames of the outcome matrix.}
 }
 \value{
 \code{mIndex} provides the M-index (= Multiclass AUC), a vector of length 1.

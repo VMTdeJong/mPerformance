@@ -3,6 +3,15 @@
 \name{mr2}
 \alias{mr2}
 \alias{MultinomialRSquare}
+\alias{Compute}
+\alias{various}
+\alias{R-square}
+\alias{measures:}
+\alias{Cox,}
+\alias{Nagelkerke}
+\alias{and}
+\alias{McFadden}
+\alias{R-square.}
 \title{mr2}
 \usage{
 mr2(p, labels, indices = l2i(p, labels), na.rm = T)
@@ -25,8 +34,9 @@ the observed outcome categories. Ignored if \code{indices} is specified.}
 mr2
 }
 \examples{
-# Using for the fitted probabilities the observed frequencies,
-# we obtain the R^2 values of the null-model:
-mr2(matrix(1/3, nrow = 3, ncol = 3), c(1,2,3))
+When we observe 3 outcomes with indices 1, 2 and 3,
+we can obtain the R^2 values of the null-model
+by letting all observed probabilities equal 1/3:
+mr2(matrix(1/3, nrow = 3, ncol = 3), indices = c(1,2,3))
 
 }

@@ -28,8 +28,9 @@ Compute the multinomial log-likelihood
 Compute the multinomial log-likelihood, for predicted or fitted values.
 }
 \examples{
-# Using the observed prevalence for the fitted probabilities,
-# we obtain the log-likelihood of the null-model:
-mll(matrix(1/3, nrow = 3, ncol = 3), c(1,2,3))
+When observing 3 outcomes with indices 1, 2 and 3,
+we can obtain the log-likelihood of the null-model:
+by letting all observed probabilities equal 1/3:
+mll(matrix(1/3, nrow = 3, ncol = 3), indices = c(1,2,3))
 
 }
