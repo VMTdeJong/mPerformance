@@ -5,11 +5,14 @@
 \alias{MultinomialLogLikelihood}
 \title{mll}
 \usage{
-mll(p, indices, na.rm = T)
+mll(p, labels, indices = l2i(p, labels), na.rm = T)
 }
 \arguments{
 \item{p}{An n x K matrix of probabilities, where n is the number of observations,
 and K the number of mutually exclusive outcome categories.}
+
+\item{labels}{Vector of length n, containing the labels (character or factor) of
+the observed outcome categories. Ignored if \code{indices} is specified.}
 
 \item{indices}{A vector of length n, containing the indices k, k = 1,...,K, of the observed outcome categories.}
 

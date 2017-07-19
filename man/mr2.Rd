@@ -5,11 +5,14 @@
 \alias{MultinomialRSquare}
 \title{mr2}
 \usage{
-mr2(p, indices, na.rm = T)
+mr2(p, labels, indices = l2i(p, labels), na.rm = T)
 }
 \arguments{
 \item{p}{An n x K matrix of probabilities, where n is the number of observations,
 and K the number of mutually exclusive outcome categories.}
+
+\item{labels}{Vector of length n, containing the labels (character or factor) of
+the observed outcome categories. Ignored if \code{indices} is specified.}
 
 \item{indices}{A vector of length n, containing the indices k, k = 1,...,K, of the observed outcome categories.}
 
@@ -22,7 +25,7 @@ and K the number of mutually exclusive outcome categories.}
 mr2
 }
 \examples{
-# Using the observed prevalence for the fitted probabilities,
+# Using for the fitted probabilities the observed frequencies,
 # we obtain the R^2 values of the null-model:
 mr2(matrix(1/3, nrow = 3, ncol = 3), c(1,2,3))
 
