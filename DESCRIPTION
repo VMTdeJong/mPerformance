@@ -1,0 +1,14 @@
+Package: mPerformance
+Type: Package
+Title: Performance measures for multinomial outcome data
+Version: 0.1.0
+Author: Valentijn de Jong
+Maintainer: Valentijn de Jong <v.m.t.dejong-2@umcutrecht.nl>
+Description: Compute performance measures for multinomial outcome data. 
+    Contains many performance measures, including overall performance measures (Brier score and various
+    versions of R-square), discrimination () and calibration () measures.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+Suggests: testthat
