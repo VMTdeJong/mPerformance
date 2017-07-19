@@ -9,6 +9,7 @@ diag(i.m3) <- 1
 p3miss <- matrix(1/3, nrow = 4, ncol = 3); colnames(p3miss) <- l3
 i3miss <- c(i3, NA)
 l3miss <- c(l3, NA)
+i.m3miss <- rbind(i.m3, NA)
 
 
 # Null-likelihood for 4 cases (3 categories):

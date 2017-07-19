@@ -9,8 +9,6 @@
 #' @aliases mll
 #' MultinomialLogLikelihood
 #'
-#' @details Not debugged for the handling of missing values.
-#'
 #' @param p An n x K matrix of probabilities, where n is the number of observations,
 #' and K the number of mutually exclusive outcome categories.
 #' @param labels Vector of length n, containing the labels (character or factor) of

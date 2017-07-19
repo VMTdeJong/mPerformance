@@ -1,5 +1,4 @@
 # To do:
-# - debug l2i for NA
 # - debug im2i for NA.
 
 
@@ -39,11 +38,18 @@ l2im <- function(p, labels, names = colnames(p))
 im2i <- function(indicator.matrix)
 {
   indices <- rep(NA, nrow(indicator.matrix))
-  for (i in 1:nrow(indicator.matrix))
+  rows <- 1:nrow(indicator.matrix)
+  row.nna <- which(rowSums(indicator.matrix) == 1) # indices[i] <- which() fails when there are NA, hence this.
+
+  if (length(row.nna) != length(indices))
+    rows <- (1:length(indices))[row.nna]
+  else
+    rows <-  1:length(indices)
+
+
+  for (i in rows)
     indices[i] <- which(indicator.matrix[i, ] == 1)
   indices
 }
 
 # all.equal(im2i(im), l2i(pml, Fishing$mode))
-
-
