@@ -5,7 +5,7 @@
 \alias{MultinomialLogLikelihood}
 \title{mll}
 \usage{
-mll(p, labels, indices = l2i(p, labels), na.rm = T)
+mll(p, labels, indices, indicator.matrix, na.rm = T)
 }
 \arguments{
 \item{p}{An n x K matrix of probabilities, where n is the number of observations,
@@ -16,21 +16,33 @@ the observed outcome categories. Ignored if \code{indices} is specified.}
 
 \item{indices}{A vector of length n, containing the indices k, k = 1,...,K, of the observed outcome categories.}
 
+\item{indicator.matrix}{Optional. An n x K matrix indicating the outcome category of each observation,
+where n is the number of observations, and K the number of mutually exclusive outcome categories.
+Ignored if \code{labels} or \code{indices} is specified.}
+
 \item{na.rm}{logical. Should missing values (including NaN) be removed?}
 }
 \value{
 \code{mll} provides the multinomial log-likelihood.
 }
 \description{
-Compute the multinomial log-likelihood
+The multinomial log-likelihood, for predicted or fitted values. Requires the predicted (or fitted) probability matrix \code{p},
+and one of the following: \code{labels}, \code{indices} or \code{indicator.matrix}.
 }
 \details{
-Compute the multinomial log-likelihood, for predicted or fitted values.
+The multinomial log-likelihood
 }
 \examples{
-When observing 3 outcomes with indices 1, 2 and 3,
-we can obtain the log-likelihood of the null-model:
-by letting all observed probabilities equal 1/3:
-mll(matrix(1/3, nrow = 3, ncol = 3), indices = c(1,2,3))
+# When we observe 3 outcomes with indices 1, 2 and 3,
+# we can obtain the log-likelihood of the null-model:
+# by letting all observed probabilities equal 1/3:
+probabilities <- matrix(1/3, nrow = 3, ncol = 3)
+indices <- c(1,2,3)
+mll(probabilities, indices = indices)
+
+# If the outcome is measured as a factor, the levels need to correspond to colnames(p):
+labels <- as.factor(indices)
+colnames(probabilities) <- labels
+mll(probabilities, labels)
 
 }

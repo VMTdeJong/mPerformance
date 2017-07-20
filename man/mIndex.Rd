@@ -7,7 +7,7 @@
 \alias{mPairwiseC}
 \title{M-index for multinomial outcome data}
 \usage{
-mIndex(p, labels, indices = l2i(p, labels), pairwiseC, names = colnames(p))
+mIndex(p, labels, indices, indicator.matrix, pairwiseC, names = colnames(p))
 }
 \arguments{
 \item{p}{An n x K matrix of probabilities, where n is the number of observations,
@@ -19,7 +19,11 @@ the observed outcome categories. Ignored if \code{indices} is specified.}
 \item{indices}{Optional. A vector of length n, containing the indices k, k = 1,...,K,
 of the observed outcome categories. Overrides \code{labels}.}
 
-\item{pairwiseC}{Optional. Optained with mPairwiseC Overrides all other parameters.}
+\item{indicator.matrix}{Optional. An n x K matrix indicating the outcome category of each observation,
+where n is the number of observations, and K the number of mutually exclusive outcome categories.
+Ignored if \code{labels} or \code{indices} is specified.}
+
+\item{pairwiseC}{Optional. Optained with mPairwiseC. Overrides all other parameters.}
 
 \item{names}{Optional. col and rownames of the outcome matrix.}
 }
@@ -36,4 +40,8 @@ and one of the following: \code{labels} or \code{indices}.
 \examples{
 mIndex(matrix(1/3, nrow = 3, ncol = 3), indices = 1:3)
 mPairwiseC(matrix(1/3, nrow = 3, ncol = 3), indices = 1:3)
+}
+\references{
+Hand DJ, Till RJ. A simple generalisation of the area under the ROC curve
+for multiple class classification problems. Machine learning. 2001 Nov 1;45(2):171-86.
 }
