@@ -5,7 +5,7 @@
 \alias{MultinomialRSquare}
 \title{mr2}
 \usage{
-mr2(p, labels, indices = l2i(p, labels), na.rm = T)
+mr2(p, labels, indices, indicator.matrix, na.rm = T)
 }
 \arguments{
 \item{p}{An n x K matrix of probabilities, where n is the number of observations,
@@ -14,7 +14,12 @@ and K the number of mutually exclusive outcome categories.}
 \item{labels}{Vector of length n, containing the labels (character or factor) of
 the observed outcome categories. Ignored if \code{indices} is specified.}
 
-\item{indices}{A vector of length n, containing the indices k, k = 1,...,K, of the observed outcome categories.}
+\item{indices}{Optional. A vector of length n, containing the indices k, k = 1,...,K,
+of the observed outcome categories. Overrides \code{labels}.}
+
+\item{indicator.matrix}{Optional. An n x K matrix indicating the outcome category of each observation,
+where n is the number of observations, and K the number of mutually exclusive outcome categories.
+Ignored if \code{labels} or \code{indices} is specified.}
 
 \item{na.rm}{logical. Should missing values (including NaN) be removed?}
 }
@@ -22,11 +27,25 @@ the observed outcome categories. Ignored if \code{indices} is specified.}
 \code{mr2} provides a data.frame of R-square values by the methods of Cox, Nagelkerke and Mcfadden.
 }
 \description{
-mr2
+Compute various R-square measures: Cox, Nagelkerke and McFadden. Requires the predicted (or fitted) probability matrix \code{p},
+and one of the following: \code{labels}, \code{indices} or \code{indicator.matrix}.
 }
 \examples{
-# Using for the fitted probabilities the observed frequencies,
-# we obtain the R^2 values of the null-model:
-mr2(matrix(1/3, nrow = 3, ncol = 3), c(1,2,3))
-
+# If we observe outcomes A, B and C:
+labels <- c("A", "B", "c")
+# The fitted probabilities of an intercept only model are given by 1/3:
+probabilities <- matrix(1/3, nrow = 3, ncol = 3)
+colnames(probabilities) <- labels
+# Then the multinomial R-squares can be obtained with:
+mr2(probabilities, labels)
+# Or:
+mr2(probabilities, as.factor(labels))
+# Similary, we can use the indices of the observed outcome
+# categories:
+mr2(probabilities, indices = c(1,2,3))
+}
+\references{
+Nagelkerke NJ. A note on a general definition of the coefficient of determination.
+Biometrika. 1991 Sep 1;78(3):691-2.
+McFadden D. Conditional logit analysis of qualitative choice behavior.
 }

@@ -2,22 +2,14 @@
 # using the probability matrix or the names thereof.
 l2i <- function(p, labels, names = colnames(p))
 {
+  if (is.null(names)) stop("names must be specified if colnames(p) is NULL.")
   indices <- rep(NA, length(labels))
   for (i in 1:length(names))
     indices[names[i] == labels] <- i
   indices
 }
 
-
-i2im <- function(p, indices)
-{
-  indicator.matrix <- matrix(0, nrow = length(indices), ncol = ncol(p))
-  for (col in 1:ncol(p))
-    indicator.matrix[indices == col, col] <- 1
-  indicator.matrix[is.na(indices), ] <- NA # entire row should be NA when index is NA.
-  indicator.matrix
-}
-
+# Converts labels to indicator matrix
 l2im <- function(p, labels, names = colnames(p))
 {
   if (is.null(names)) stop("names must be specified if colnames(p) is NULL.")
@@ -28,8 +20,25 @@ l2im <- function(p, labels, names = colnames(p))
   indicator.matrix
 }
 
-# im <- l2im(pml, Fishing$mode)
+# Converts indices to indicator matrix
+i2im <- function(p, indices)
+{
+  indicator.matrix <- matrix(0, nrow = length(indices), ncol = ncol(p))
+  for (col in 1:ncol(p))
+    indicator.matrix[indices == col, col] <- 1
+  indicator.matrix[is.na(indices), ] <- NA # entire row should be NA when index is NA.
+  indicator.matrix
+}
 
+# Converts indices to labels
+i2l <- function(p, indices, names = colnames(p))
+{
+  if (is.null(names)) stop("names must be specified if colnames(p) is NULL.")
+  names[indices]
+}
+
+
+# Converts indicator matrix to indices
 # Note: looks stupid, but is much faster than apply.
 im2i <- function(indicator.matrix)
 {
@@ -42,10 +51,53 @@ im2i <- function(indicator.matrix)
   else
     rows <-  1:length(indices)
 
-
   for (i in rows)
     indices[i] <- which(indicator.matrix[i, ] == 1)
   indices
 }
 
-# all.equal(im2i(im), l2i(pml, Fishing$mode))
+# Converts indicator mmatirx to labels
+im2l <- function(p, indicator.matrix, names = colnames(p))
+{
+  if (is.null(names)) stop("names must be specified if colnames(p) is NULL.")
+  names[im2i(indicator.matrix)]
+}
+
+
+
+###### Methods that combine these. Such that getting the right object takes only a single command.
+# Gets indices, using methods above.
+# Note that the methods using indicator.matrix are by far the slowest.
+getIndices <- function(p, labels, indices, indicator.matrix, names = colnames(p))
+{
+  if (!missing(indices))
+    return(indices)
+  if (!(missing(p) || missing(labels)) )
+    return(l2i(p = p, labels = labels, names = names))
+  if (!missing(indicator.matrix))
+    return(im2i(indicator.matrix = indicator.matrix))
+  # stop("Too many arguments missing.")
+}
+
+# Gets labels, using methods above
+getLabels <- function(p, labels, indices, indicator.matrix, names = colnames(p))
+{
+  if (!missing(labels))
+    return(labels)
+  if (!(missing(p) || missing(indices)) )
+    return(i2l(p = p, indices = indices, names = names))
+  if (!missing(indicator.matrix))
+    return(im2l(p = p, indicator.matrix = indicator.matrix, names = names))
+  # stop("Too many arguments missing.")
+}
+
+# Gets indicator.matrix, using methos above.
+getIndicatorMatrix <- function(p, labels, indices, indicator.matrix, names = colnames(p))
+{
+  if (!missing(indicator.matrix)) return(indicator.matrix)
+  if (!(missing(p) || missing(indices)))
+    return(i2im(p = p, indices = indices))
+  if (!(missing(p) || missing(labels)))
+    return(l2im(p = p, labels = labels, names = names))
+  # stop("TOo many arguments missing.")
+}

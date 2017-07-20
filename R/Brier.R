@@ -19,15 +19,26 @@
 #'
 #' @return  \code{brier} provides the Brier score, a vector of length 1.
 #'
+#' @references Brier GW. Verification of forecasts expressed in terms of probability. Monthly weather
+#' review. 1950 Jan;78(1):1-3.
+#'
 #' @examples
 #' brier(matrix(1/3, nrow = 3, ncol = 3), indices = c(1,2,3))
-#' brier(matrix(c(1/2, 1/4, 1/4,
+#' brier(t(matrix(c(1/2, 1/4, 1/4,
 #'                1/8, 5/8, 2/8,
 #'                1/8, 1/8, 3/4),
-#'                nrow = 3, ncol = 3),
+#'                nrow = 3, ncol = 3)),
 #' indicator.matrix = matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE))
 #' @export
 
-brier <- function(p, labels, indices = l2i(p, labels), indicator.matrix = i2im(p, indices), na.rm = T)
+brier <- function(p, labels, indices, indicator.matrix, na.rm = T)
+{
+  indicator.matrix <- getIndicatorMatrix(p = p, labels = labels, indices = indices,
+                                         indicator.matrix = indicator.matrix)
+  if (!all.equal(dim(p), dim(indicator.matrix)))
+    stop("Dimensions of probability matrix p and indicator.matrix should match,
+         or nrow(p) should match length(labels) or length(indices).")
   c("Brier" = mean(rowSums((p - indicator.matrix)^2), na.rm = na.rm))
+}
+
 

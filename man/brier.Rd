@@ -5,8 +5,7 @@
 \alias{BrierScore}
 \title{Brier score for multinomial data.}
 \usage{
-brier(p, labels, indices = l2i(p, labels), indicator.matrix = i2im(p,
-  indices), na.rm = T)
+brier(p, labels, indices, indicator.matrix, na.rm = T)
 }
 \arguments{
 \item{p}{An n x K matrix of probabilities, where n is the number of observations,
@@ -34,9 +33,13 @@ and one of the following: \code{labels}, \code{indices} or \code{indicator.matri
 }
 \examples{
 brier(matrix(1/3, nrow = 3, ncol = 3), indices = c(1,2,3))
-brier(matrix(c(1/2, 1/4, 1/4,
+brier(t(matrix(c(1/2, 1/4, 1/4,
                1/8, 5/8, 2/8,
                1/8, 1/8, 3/4),
-               nrow = 3, ncol = 3),
+               nrow = 3, ncol = 3)),
 indicator.matrix = matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE))
+}
+\references{
+Brier GW. Verification of forecasts expressed in terms of probability. Monthly weather
+review. 1950 Jan;78(1):1-3.
 }
