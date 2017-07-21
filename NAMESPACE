@@ -2,7 +2,8 @@
 
 export(brier)
 export(mIndex)
+export(mModelPerformance)
 export(mPairwiseC)
+export(mPerformance)
 export(mll)
 export(mr2)
-export(predictionsPerformance)
