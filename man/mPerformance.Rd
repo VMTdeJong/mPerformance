@@ -2,7 +2,7 @@
 % Please edit documentation in R/mPerformance.R
 \name{mPerformance}
 \alias{mPerformance}
-\title{Performance of multinomial predictions.}
+\title{Performance of predicting a multinomial outcome}
 \usage{
 mPerformance(p, labels, indices, indicator.matrix, names = colnames(p),
   na.rm = T)
@@ -30,7 +30,7 @@ should be matched? By default, the colnames of the outcome matrix \code{p}.}
 \item{na.rm}{logical. Should missing values (including NaN) be removed?}
 }
 \value{
-An object of class "mPerformance", containing several types of performance measures: discrimination (M-index or multiclass AUC),
+An object of class "mPerformance".A list containing several types of performance measures: discrimination (M-index or multiclass AUC),
 overall performance (Brier score and various R squares: Cox, Nagelkerke and McFadden) and calibration ().
 }
 \description{

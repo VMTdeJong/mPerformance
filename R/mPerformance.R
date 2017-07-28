@@ -1,4 +1,4 @@
-#' Performance of multinomial predictions.
+#' Performance of predicting a multinomial outcome
 #'
 #' @description Predictive performance for predicted or fitted values. Requires the predicted
 #' (or fitted) probability matrix \code{p}, and one of the following: \code{labels},
@@ -17,8 +17,8 @@
 
 mPerformance <- function(p, labels, indices, indicator.matrix, names = colnames(p), na.rm = T)
 {
-  # labels <- getLabels(p = p, labels = labels, indices = indices, # Not (yet) necessary
-  #                     indicator.matrix = indicator.matrix, names = names)
+  labels           <- getLabels(         p = p, labels = labels, indices = indices,
+                                         indicator.matrix = indicator.matrix, names = names)
   indices          <- getIndices(        p = p, labels = labels, indices = indices,
                                          indicator.matrix = indicator.matrix, names = names)
   indicator.matrix <- getIndicatorMatrix(p = p, labels = labels, indices = indices,
@@ -32,6 +32,7 @@ mPerformance <- function(p, labels, indices, indicator.matrix, names = colnames(
   out$rsquare <- mr2(p = p, indices = indices, na.rm = na.rm)
   out$LL.null <- mllnull(p = p, indices = indices, na.rm = na.rm)
   out$LL.model <- c("Multinomial log-likelihood model" =  mll(p = p, indices = indices, na.rm = na.rm)[[1]])
+  out$class.table <- table(labels)
 
   class(out) <- "mPerformance"
   out
@@ -50,9 +51,10 @@ getFitData <- function(fit, ...)
   if (any(class(fit) == "mnlogit"))
   {
     p <- fit$probabilities
-    indicator.matrix <- fit$residuals + fit$fitted.values
+    indicator.matrix <- round(fit$residuals + fit$fitted.values, digits = 14)
+    if (any(!(indicator.matrix == 0 | indicator.matrix == 1) ))
+      stop("Outcome could not be extracted from mnlogit. Try mPerformance() instead.")
     return(list(p = p, indicator.matrix = indicator.matrix))
-    # Something goes wrong here. The likelihood is not correct. Probably conversion to indices goes wrong.
   }
 
   stop("class of fit object not recognized. Try mPerformance() instead.")
@@ -61,10 +63,11 @@ getFitData <- function(fit, ...)
 #' Performance of a multinomial prediction model
 #'
 #'
-#' @description Predictive performance for a prediction model. Works with the \code{mlogit}
-#' package.
+#' @description Apparent (= within sample) predictive performance of a multinomial prediction model.
+#' Works with the \code{mlogit} and \code{mnlogit} packages.
 #'
 #' @param fit A model fit object.
+#' @param ... ...
 #'
 #' @template ref_Nagelkerke
 #' @template ref_Brier
@@ -81,7 +84,8 @@ mModelPerformance <- function(fit, ...)
     x <- getFitData(fit, ...)
     p <- x$p
     ## not necessary yet:
-    # labels <- getLabels(p, labels = x$labels, indices = x$indices, indicator.matrix = indicator.matrix)
+    # labels           <- getLabels(         p, labels = x$labels, indices = x$indices,
+    #                                        indicator.matrix = indicator.matrix)
     indices          <- getIndices(        p = p, labels = x$labels, indices = x$indices,
                                            indicator.matrix = x$indicator.matrix)
     indicator.matrix <- getIndicatorMatrix(p = p, labels = x$labels, indices = x$indices,
@@ -93,4 +97,3 @@ mModelPerformance <- function(fit, ...)
   else
     stop("mModelPerformance requires a model fit object. Try mPerformance() instead.")
 }
-
