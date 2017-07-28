@@ -1,30 +1,22 @@
 #' M-index for multinomial outcome data
 #'
 #' M-index for multinomial data. Requires the predicted (or fitted) probability matrix \code{p},
-#' and one of the following: \code{labels} or \code{indices}.
+#' and one of the following: \code{labels}, \code{indices} or \code{indicator.matrix}.
+#' Preferably one of the two former.
 #'
 #' @aliases M-index
 #' MulticlassAUC
 #' mPairwiseC
 #'
-#' @param p An n x K matrix of probabilities, where n is the number of observations,
-#' and K the number of mutually exclusive outcome categories.
-#' @param labels Vector of length n, containing the labels (character or factor) of
-#' the observed outcome categories. Ignored if \code{indices} is specified.
-#' @param indices Optional. A vector of length n, containing the indices k, k = 1,...,K,
-#' of the observed outcome categories. Overrides \code{labels}.
-#' @param indicator.matrix Optional. An n x K matrix indicating the outcome category of each observation,
-#' where n is the number of observations, and K the number of mutually exclusive outcome categories.
-#' Ignored if \code{labels} or \code{indices} is specified.
+#' @template param_perf
 #' @param pairwiseC Optional. Optained with mPairwiseC. Overrides all other parameters.
-#' @param names Optional. col and rownames of the outcome matrix.
 #'
-#' @return  \code{mIndex} provides the M-index (= Multiclass AUC), a vector of length 1.
-#' @return  \code{mPairwiseC} provides a matrix with pairwise c-statistics. Contains both
-#' c(i|i) and c(j|i), and the diagonal is \code{NA}.
+#' @return  \code{mIndex} provides the M-index (= Multiclass AUC) of Hand and Till (2001),
+#'  a vector of length 1.
+#' @return  \code{mPairwiseC} provides a matrix the pairwise c-statistics. Contains both
+#' c(i|i) and c(j|i) of equation 3 of Hand and Till (2001), and the diagonal is \code{NA}.
 #'
-#' @references Hand DJ, Till RJ. A simple generalisation of the area under the ROC curve
-#' for multiple class classification problems. Machine learning. 2001 Nov 1;45(2):171-86.
+#' @template ref_Hand
 #'
 #' @examples
 #' mIndex(matrix(1/3, nrow = 3, ncol = 3), indices = 1:3)
@@ -33,21 +25,18 @@
 
 mIndex <- function(p, labels, indices, indicator.matrix, pairwiseC, names = colnames(p))
 {
-  p <- as.matrix(p)
-  indices <- getIndices(p = p, labels = labels, indices = indices, indicator.matrix = indicator.matrix, names = names)
-  K <- ncol(p)
-  if (is.null(names)) names <- 1:K
-
-  if (K < 2) stop("Prediction matrix should contain at least 2 columns,
-                      where each column contains the predicted probabilities for that category.")
-
   if (missing(pairwiseC))
   {
+    K <- ncol(p)
+    if (is.null(names)) names <- 1:K
+
+    if (K < 2) stop("Prediction matrix should contain at least 2 columns,
+                      where each column contains the predicted probabilities for that category.")
     indices <- getIndices(p = p, labels = labels, indices = indices, indicator.matrix = indicator.matrix)
     pairwiseC <- mPairwiseC(p = p, indices = indices, names = names) # Pairwise c-stats
   }
-  c("M" = sum(sum(pairwiseC, na.rm = T)/(K*(K - 1)))) # left part of equation 7 from Hand and Till 2001, except
-  # that it is not multiplied by 2, as pairwiseC contains both c(i|j) and c(j|i), not their means.
+  c("m" = mean(pairwiseC, na.rm = T)) # Simple version of left part of equation 7 from Hand and Till 2001,
+    # except that it is not multiplied by 2, as pairwiseC contains both c(i|j) and c(j|i), not their means.
 }
 
 

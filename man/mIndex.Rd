@@ -14,28 +14,34 @@ mIndex(p, labels, indices, indicator.matrix, pairwiseC, names = colnames(p))
 and K the number of mutually exclusive outcome categories.}
 
 \item{labels}{Vector of length n, containing the labels (character or factor) of
-the observed outcome categories. Ignored if \code{indices} is specified.}
+the observed outcome categories. If specified, must correspond with the column names
+of \code{p} or with \code{names}.}
 
 \item{indices}{Optional. A vector of length n, containing the indices k, k = 1,...,K,
-of the observed outcome categories. Overrides \code{labels}.}
+of the observed outcome categories. If specified, these indices must corresond with
+their respective indices in \code{p}.}
 
-\item{indicator.matrix}{Optional. An n x K matrix indicating the outcome category of each observation,
-where n is the number of observations, and K the number of mutually exclusive outcome categories.
-Ignored if \code{labels} or \code{indices} is specified.}
+\item{indicator.matrix}{Optional. An n x K matrix indicating the outcome category of
+each observation, where n is the number of observations, and K the number of mutually
+exclusive outcome categories. If specified, the order of the columns should correspond
+with the order of the columns of \code{p}.}
 
 \item{pairwiseC}{Optional. Optained with mPairwiseC. Overrides all other parameters.}
 
-\item{names}{Optional. col and rownames of the outcome matrix.}
+\item{names}{Optional. What are the \code{labels} to which the columns of \code{p}
+should be matched? By default, the colnames of the outcome matrix \code{p}.}
 }
 \value{
-\code{mIndex} provides the M-index (= Multiclass AUC), a vector of length 1.
+\code{mIndex} provides the M-index (= Multiclass AUC) of Hand and Till (2001),
+ a vector of length 1.
 
-\code{mPairwiseC} provides a matrix with pairwise c-statistics. Contains both
-c(i|i) and c(j|i), and the diagonal is \code{NA}.
+\code{mPairwiseC} provides a matrix the pairwise c-statistics. Contains both
+c(i|i) and c(j|i) of equation 3 of Hand and Till (2001), and the diagonal is \code{NA}.
 }
 \description{
 M-index for multinomial data. Requires the predicted (or fitted) probability matrix \code{p},
-and one of the following: \code{labels} or \code{indices}.
+and one of the following: \code{labels}, \code{indices} or \code{indicator.matrix}.
+Preferably one of the two former.
 }
 \examples{
 mIndex(matrix(1/3, nrow = 3, ncol = 3), indices = 1:3)

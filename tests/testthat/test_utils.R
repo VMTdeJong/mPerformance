@@ -13,7 +13,6 @@ test_that("x2y methods manipulate code as intended.", {
   expect_equal(i3, l2i(p3, l3))
   expect_equal(i3, im2i(i.m3))
 
-  # To labels : not implemented (yet)
   all.equal(l3, i2l(p3, i3))
   all.equal(l3, im2l(p3, i.m3))
 })
@@ -23,6 +22,7 @@ test_that("GetLabels gets the labels.", {
   expect_equal(getLabels(labels = l3), l3)
   expect_equal(getLabels(p = p3, indices = i3), l3)
   expect_equal(getLabels(p = p3, indicator.matrix = i.m3), l3)
+  expect_equal(getLabels(p = p3, labels = labels, indices = i3), l3) # labels is also a function
 })
 
 test_that("GetIndices gets the indices", {
@@ -44,11 +44,18 @@ test_that("GetIndicatorMatrix gets the indicator matrix", {
 # all.equal(im2i(im), l2i(pml, Fishing$mode))
 # im <- l2im(pml, Fishing$mode)
 
-
-#### Some timing tests
+# # # Copy from test_R2:
+# p3 <- matrix(1/3, nrow = 3, ncol = 3)
+# i3 <- 1:3
+# l3 <- c("A", "B", "C"); colnames(p3) <- l3
+# i.m3 <- matrix(0, nrow = 3, ncol = 3)
+# diag(i.m3) <- 1
+#
+# #### Some timing tests
 # n <- 1e6
 # px <- matrix(p3, nrow = nrow(p3) * n, ncol = ncol(p3), byrow = T)
 # lx <- rep(l3, n)
+# colnames(px) <- l3
 # ix <- rep(i3, n)
 # i.mx <- matrix(i.m3, nrow = nrow(i.m3) * n, ncol = ncol(i.m3), byrow = T)
 #
@@ -61,7 +68,10 @@ test_that("GetIndicatorMatrix gets the indicator matrix", {
 #
 # system.time(i2im(px, ix)) # Faster
 # system.time(l2im(px, lx, names = c("A", "B", "C")))
-
-
-# system.time(getLabels(labels = lx))
-# system.time(getLabels(p = px, indices = ix))
+#
+#
+# system.time(getLabels(labels = lx)) # Zero
+# system.time(getLabels(p = px, indices = ix)) # Non-zero
+#
+# system.time(getIndices(indices = ix) + 1) # No difference between these:
+# system.time(ix + 1)

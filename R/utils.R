@@ -13,14 +13,14 @@ l2i <- function(p, labels, names = colnames(p))
 l2im <- function(p, labels, names = colnames(p))
 {
   if (is.null(names)) stop("names must be specified if colnames(p) is NULL.")
-  indicator.matrix <- matrix(0, nrow = nrow(p), ncol = ncol(p))
-  for (col in 1:ncol(p))
+  indicator.matrix <- matrix(0, nrow = length(labels), ncol = length(names))
+  for (col in 1:ncol(indicator.matrix))
     indicator.matrix[labels == names[col], col] <- 1
   indicator.matrix[is.na(labels), ] <- NA # entire row should be NA when label is NA.
   indicator.matrix
 }
 
-# Converts indices to indicator matrix
+# Convert indices to indicator matrix
 i2im <- function(p, indices)
 {
   indicator.matrix <- matrix(0, nrow = length(indices), ncol = ncol(p))
@@ -30,11 +30,21 @@ i2im <- function(p, indices)
   indicator.matrix
 }
 
+im2im <- function(indices, names)
+{
+  indicator.matrix <- matrix(0, nrow = length(indices), ncol = length(names))
+  for (col in 1:ncol(indicator.matrix))
+    indicator.matrix[indices == col, col] <- 1
+  indicator.matrix[is.na(indices), ] <- NA # entire row should be NA when index is NA.
+  indicator.matrix
+}
+
 # Converts indices to labels
 i2l <- function(p, indices, names = colnames(p))
 {
   if (is.null(names)) stop("names must be specified if colnames(p) is NULL.")
-  names[indices]
+  lab <- names[indices]
+  lab
 }
 
 
@@ -70,34 +80,42 @@ im2l <- function(p, indicator.matrix, names = colnames(p))
 # Note that the methods using indicator.matrix are by far the slowest.
 getIndices <- function(p, labels, indices, indicator.matrix, names = colnames(p))
 {
-  if (!missing(indices))
+  if (!missing(indices) && is.numeric(indices))
     return(indices)
-  if (!(missing(p) || missing(labels)) )
-    return(l2i(p = p, labels = labels, names = names))
-  if (!missing(indicator.matrix))
+
+  if (!missing(labels) && is.character(names) && (is.character(labels) || is.factor(labels)))
+    return(l2i(labels = labels, names = names))
+
+  if (!missing(indicator.matrix) && is.numeric(indicator.matrix))
     return(im2i(indicator.matrix = indicator.matrix))
-  # stop("Too many arguments missing.")
 }
 
 # Gets labels, using methods above
 getLabels <- function(p, labels, indices, indicator.matrix, names = colnames(p))
 {
-  if (!missing(labels))
+  if (!missing(labels) && (is.character(labels) || is.factor(labels)))
     return(labels)
-  if (!(missing(p) || missing(indices)) )
-    return(i2l(p = p, indices = indices, names = names))
-  if (!missing(indicator.matrix))
-    return(im2l(p = p, indicator.matrix = indicator.matrix, names = names))
-  # stop("Too many arguments missing.")
+
+  if (!missing(indices) && is.numeric(indices) && is.character(names))
+    return(i2l(indices = indices, names = names))
+
+  if (!missing(indicator.matrix) && is.numeric(indicator.matrix))
+    return(im2l(indicator.matrix = indicator.matrix, names = names))
 }
+
 
 # Gets indicator.matrix, using methos above.
 getIndicatorMatrix <- function(p, labels, indices, indicator.matrix, names = colnames(p))
 {
-  if (!missing(indicator.matrix)) return(indicator.matrix)
-  if (!(missing(p) || missing(indices)))
-    return(i2im(p = p, indices = indices))
-  if (!(missing(p) || missing(labels)))
-    return(l2im(p = p, labels = labels, names = names))
-  # stop("TOo many arguments missing.")
+  if (!missing(indicator.matrix) && is.numeric(indicator.matrix))
+    return(indicator.matrix)
+
+  if (!missing(indices) && is.numeric(indices))
+    if (!missing(p) && is.numeric(p))
+      return(i2im(p = p, indices = indices)) else
+        if (is.character(names))
+          return(im2im(indices = indices, names = names))
+
+  if (!missing(labels) && (is.factor(labels) || is.character(labels)) && is.character(names))
+    return(l2im(labels = labels, names = names))
 }

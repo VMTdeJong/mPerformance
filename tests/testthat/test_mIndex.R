@@ -22,10 +22,10 @@ p5 <- matrix(c(1/2, 1/4, 1/4,
 colnames(p5) <- l3
 
 test_that("mIndex works for simple cases.", {
-  expect_equal(mIndex(p3, l3), c("M" = .5))
-  expect_equal(mIndex(p3, indices = i3), c("M" = .5))
-  expect_equal(mIndex(p5,  c("A", "B", "C", "A", "A")), c("M" = 5/6)) # Reference value
-  expect_equal(mIndex(p5, indices = c(1, 2, 3, 1, 1)),  c("M" = 5/6)) # Reference value
+  expect_equal(mIndex(p3, l3), c("m" = .5))
+  expect_equal(mIndex(p3, indices = i3), c("m" = .5))
+  expect_equal(mIndex(p5,  c("A", "B", "C", "A", "A")), c("m" = 5/6)) # Reference value
+  expect_equal(mIndex(p5, indices = c(1, 2, 3, 1, 1)),  c("m" = 5/6)) # Reference value
 })
 
 

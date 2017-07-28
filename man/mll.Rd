@@ -5,20 +5,27 @@
 \alias{MultinomialLogLikelihood}
 \title{mll}
 \usage{
-mll(p, labels, indices, indicator.matrix, na.rm = T)
+mll(p, labels, indices, indicator.matrix, names = colnames(p), na.rm = T)
 }
 \arguments{
 \item{p}{An n x K matrix of probabilities, where n is the number of observations,
 and K the number of mutually exclusive outcome categories.}
 
 \item{labels}{Vector of length n, containing the labels (character or factor) of
-the observed outcome categories. Ignored if \code{indices} is specified.}
+the observed outcome categories. If specified, must correspond with the column names
+of \code{p} or with \code{names}.}
 
-\item{indices}{A vector of length n, containing the indices k, k = 1,...,K, of the observed outcome categories.}
+\item{indices}{Optional. A vector of length n, containing the indices k, k = 1,...,K,
+of the observed outcome categories. If specified, these indices must corresond with
+their respective indices in \code{p}.}
 
-\item{indicator.matrix}{Optional. An n x K matrix indicating the outcome category of each observation,
-where n is the number of observations, and K the number of mutually exclusive outcome categories.
-Ignored if \code{labels} or \code{indices} is specified.}
+\item{indicator.matrix}{Optional. An n x K matrix indicating the outcome category of
+each observation, where n is the number of observations, and K the number of mutually
+exclusive outcome categories. If specified, the order of the columns should correspond
+with the order of the columns of \code{p}.}
+
+\item{names}{Optional. What are the \code{labels} to which the columns of \code{p}
+should be matched? By default, the colnames of the outcome matrix \code{p}.}
 
 \item{na.rm}{logical. Should missing values (including NaN) be removed?}
 }
@@ -26,8 +33,9 @@ Ignored if \code{labels} or \code{indices} is specified.}
 \code{mll} provides the multinomial log-likelihood.
 }
 \description{
-The multinomial log-likelihood, for predicted or fitted values. Requires the predicted (or fitted) probability matrix \code{p},
-and one of the following: \code{labels}, \code{indices} or \code{indicator.matrix}.
+The multinomial log-likelihood, for predicted or fitted values. Requires the
+predicted (or fitted) probability matrix \code{p}, and one of the following: \code{labels},
+ \code{indices} or \code{indicator.matrix}. Preferably one of the two former.
 }
 \details{
 The multinomial log-likelihood
